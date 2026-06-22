@@ -1,0 +1,453 @@
+{
+  "users": [
+    {
+      "id": "USR-001",
+      "email": "admin@smartcampus.edu",
+      "password": "admin123",
+      "role": "admin",
+      "name": "Niveditha G",
+      "avatar": "NG"
+    },
+    {
+      "id": "USR-002",
+      "email": "alan.turing@university.edu",
+      "password": "faculty123",
+      "role": "faculty",
+      "name": "Dr. Alan Turing",
+      "avatar": "AT",
+      "department": "Computer Science"
+    },
+    {
+      "id": "USR-003",
+      "email": "niveditha.g@gmu.edu",
+      "password": "student123",
+      "role": "student",
+      "name": "Niveditha G",
+      "avatar": "NG",
+      "studentId": "STU-001"
+    },
+    {
+      "id": "USR-004",
+      "email": "parent@smartcampus.edu",
+      "password": "parent123",
+      "role": "parent",
+      "name": "Ramesh G",
+      "avatar": "RG",
+      "childStudentId": "STU-001"
+    },
+    {
+      "id": "USR-005",
+      "email": "kavya.r@gmail.com",
+      "password": "student123",
+      "role": "student",
+      "name": "Kavya R",
+      "avatar": "KR",
+      "studentId": "STU-006"
+    },
+    {
+      "id": "USR-006",
+      "email": "test@gmail.com",
+      "password": "student123",
+      "role": "student",
+      "name": "Test",
+      "avatar": "T",
+      "studentId": "STU-007"
+    }
+  ],
+  "students": [
+    {
+      "id": "STU-001",
+      "name": "Niveditha G",
+      "rollNo": "MCA-2026-001",
+      "department": "MCA",
+      "email": "niveditha.g@gmu.edu",
+      "phone": "9876543210",
+      "guardian": "Ramesh G",
+      "attendance": 92,
+      "gpa": 9.12,
+      "gradeTrends": [
+        8.8,
+        9,
+        8.95,
+        9.12
+      ],
+      "subjects": {
+        "dsa": 92,
+        "dbms": 88,
+        "web": 95,
+        "os": 90
+      }
+    },
+    {
+      "id": "STU-002",
+      "name": "Rohan Sharma",
+      "rollNo": "CS-2026-024",
+      "department": "Computer Science",
+      "email": "rohan.s@university.edu",
+      "phone": "9876543211",
+      "guardian": "Suresh Sharma",
+      "attendance": 72,
+      "gpa": 6.82,
+      "gradeTrends": [
+        7.2,
+        7,
+        6.75,
+        6.82
+      ],
+      "subjects": {
+        "dsa": 68,
+        "dbms": 62,
+        "web": 74,
+        "os": 69
+      }
+    },
+    {
+      "id": "STU-003",
+      "name": "Priyanka Sen",
+      "rollNo": "EC-2026-089",
+      "department": "Electronics",
+      "email": "priyanka.s@university.edu",
+      "phone": "9876543212",
+      "guardian": "Anil Sen",
+      "attendance": 88,
+      "gpa": 8.54,
+      "gradeTrends": [
+        8.2,
+        8.4,
+        8.35,
+        8.54
+      ],
+      "subjects": {
+        "dsa": 82,
+        "dbms": 85,
+        "web": 88,
+        "os": 86
+      }
+    },
+    {
+      "id": "STU-004",
+      "name": "Amit Patel",
+      "rollNo": "CE-2026-015",
+      "department": "Civil Engineering",
+      "email": "amit.p@university.edu",
+      "phone": "9876543213",
+      "guardian": "Rajesh Patel",
+      "attendance": 64,
+      "gpa": 5.92,
+      "gradeTrends": [
+        6.4,
+        6.1,
+        5.82,
+        5.92
+      ],
+      "subjects": {
+        "dsa": 55,
+        "dbms": 58,
+        "web": 62,
+        "os": 62
+      }
+    },
+    {
+      "id": "STU-005",
+      "name": "Deepa Naik",
+      "rollNo": "MCA-2026-004",
+      "department": "MCA",
+      "email": "deepa.n@gmu.edu",
+      "phone": "9876543214",
+      "guardian": "Sunil Naik",
+      "attendance": 96,
+      "gpa": 9.45,
+      "gradeTrends": [
+        9,
+        9.2,
+        9.38,
+        9.45
+      ],
+      "subjects": {
+        "dsa": 95,
+        "dbms": 94,
+        "web": 96,
+        "os": 93
+      }
+    },
+    {
+      "id": "STU-006",
+      "name": "Kavya R",
+      "rollNo": "MCA-2026-006",
+      "department": "MCA",
+      "email": "kavya.r@gmail.com",
+      "phone": "9988776655",
+      "guardian": "Rajesh R",
+      "attendance": 0,
+      "gpa": 0,
+      "gradeTrends": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "subjects": {
+        "dsa": 0,
+        "dbms": 0,
+        "web": 0,
+        "os": 0
+      }
+    },
+    {
+      "id": "STU-007",
+      "name": "Test",
+      "rollNo": "MCA-2026-007",
+      "department": "MCA",
+      "email": "test@gmail.com",
+      "phone": "9876543210",
+      "guardian": "Test GN",
+      "attendance": 0,
+      "gpa": 0,
+      "gradeTrends": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "subjects": {
+        "dsa": 0,
+        "dbms": 0,
+        "web": 0,
+        "os": 0
+      }
+    }
+  ],
+  "faculty": [
+    {
+      "id": "FAC-501",
+      "name": "Dr. Alan Turing",
+      "department": "Computer Science",
+      "designation": "Professor / HOD",
+      "email": "alan.turing@university.edu",
+      "status": "Active"
+    },
+    {
+      "id": "FAC-502",
+      "name": "Prof. Ada Lovelace",
+      "department": "MCA",
+      "designation": "Associate Professor",
+      "email": "ada.lovelace@university.edu",
+      "status": "Active"
+    },
+    {
+      "id": "FAC-503",
+      "name": "Dr. Grace Hopper",
+      "department": "Electronics",
+      "designation": "Professor",
+      "email": "grace.hopper@university.edu",
+      "status": "Active"
+    },
+    {
+      "id": "FAC-504",
+      "name": "Dr. Richard Feynman",
+      "department": "Civil Engineering",
+      "designation": "Visiting Professor",
+      "email": "richard.feynman@university.edu",
+      "status": "On Leave"
+    }
+  ],
+  "books": [
+    {
+      "isbn": "978-0078022128",
+      "title": "Software Engineering: A Practitioner's Approach",
+      "author": "Pressman, R. S.",
+      "status": "Available",
+      "borrowedBy": null
+    },
+    {
+      "isbn": "978-0133970777",
+      "title": "Fundamentals of Database Systems",
+      "author": "Elmasri & Navathe",
+      "status": "Borrowed",
+      "borrowedBy": "Rohan Sharma"
+    },
+    {
+      "isbn": "978-1118063330",
+      "title": "Operating System Concepts",
+      "author": "Silberschatz & Galvin",
+      "status": "Available",
+      "borrowedBy": null
+    },
+    {
+      "isbn": "978-0596007126",
+      "title": "Head First Design Patterns",
+      "author": "Freeman & Robson",
+      "status": "Available",
+      "borrowedBy": null
+    },
+    {
+      "isbn": "978-1118008188",
+      "title": "HTML and CSS: Design and Build Websites",
+      "author": "Duckett, J.",
+      "status": "Available",
+      "borrowedBy": null
+    }
+  ],
+  "transactions": [
+    {
+      "txnId": "TXN-10041",
+      "studentName": "Niveditha G",
+      "rollNo": "MCA-2026-001",
+      "feeCategory": "Tuition Fee",
+      "amount": 45000,
+      "paymentMode": "UPI / Net Banking",
+      "date": "2026-06-15",
+      "status": "Success"
+    },
+    {
+      "txnId": "TXN-10042",
+      "studentName": "Rohan Sharma",
+      "rollNo": "CS-2026-024",
+      "feeCategory": "Exam Fee",
+      "amount": 2500,
+      "paymentMode": "UPI / Net Banking",
+      "date": "2026-06-18",
+      "status": "Success"
+    },
+    {
+      "txnId": "TXN-10043",
+      "studentName": "Priyanka Sen",
+      "rollNo": "EC-2026-089",
+      "feeCategory": "Hostel & Mess Fee",
+      "amount": 32000,
+      "paymentMode": "Cash / Bank Challan",
+      "date": "2026-06-19",
+      "status": "Success"
+    }
+  ],
+  "activities": [
+    {
+      "text": "Niveditha G logged in as admin",
+      "time": "Just now",
+      "icon": "profile"
+    },
+    {
+      "text": "Niveditha G logged in as student",
+      "time": "Just now",
+      "icon": "profile"
+    },
+    {
+      "text": "Niveditha G logged in as admin",
+      "time": "Just now",
+      "icon": "profile"
+    },
+    {
+      "text": "Test logged in as student",
+      "time": "Just now",
+      "icon": "profile"
+    },
+    {
+      "text": "Niveditha G logged in as student",
+      "time": "Just now",
+      "icon": "profile"
+    },
+    {
+      "text": "Admission approved: Test enrolled as MCA-2026-007",
+      "time": "Just now",
+      "icon": "profile"
+    },
+    {
+      "text": "Niveditha G logged in as admin",
+      "time": "Just now",
+      "icon": "profile"
+    },
+    {
+      "text": "New admission application from Test",
+      "time": "Just now",
+      "icon": "profile"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "NTF-001",
+      "type": "warning",
+      "title": "Low Attendance Alert",
+      "message": "Amit Patel's attendance has dropped below 75%",
+      "for": "admin",
+      "read": true,
+      "time": "1 hour ago"
+    },
+    {
+      "id": "NTF-002",
+      "type": "info",
+      "title": "Fee Payment Received",
+      "message": "Niveditha G paid ₹45,000 Tuition Fee via UPI",
+      "for": "admin",
+      "read": true,
+      "time": "2 hours ago"
+    },
+    {
+      "id": "NTF-003",
+      "type": "danger",
+      "title": "Academic Risk",
+      "message": "Rohan Sharma GPA fell below 7.0 threshold",
+      "for": "admin",
+      "read": true,
+      "time": "1 day ago"
+    },
+    {
+      "id": "NTF-004",
+      "type": "success",
+      "title": "Library Return",
+      "message": "Book 'Operating System Concepts' returned successfully",
+      "for": "all",
+      "read": true,
+      "time": "2 days ago"
+    }
+  ],
+  "announcements": [
+    {
+      "title": "Test  Announcement",
+      "message": "This is the test Announcement",
+      "priority": "high",
+      "author": "Niveditha G",
+      "id": "ANN-003",
+      "date": "2026-06-21"
+    },
+    {
+      "id": "ANN-001",
+      "title": "Semester Exams Schedule Released",
+      "message": "The 4th semester examination schedule has been published. Exams begin July 15, 2026. Please check the notice board for detailed timetables.",
+      "author": "Admin",
+      "date": "2026-06-20",
+      "priority": "high"
+    },
+    {
+      "id": "ANN-002",
+      "title": "Library Hours Extended",
+      "message": "Library will remain open until 9:00 PM during examination period (July 10 - July 30). Students are encouraged to utilize this extended access.",
+      "author": "Librarian",
+      "date": "2026-06-18",
+      "priority": "normal"
+    }
+  ],
+  "pendingAdmissions": [
+    {
+      "id": "ADM-001",
+      "name": "Kavya R",
+      "email": "kavya.r@gmail.com",
+      "phone": "9988776655",
+      "department": "MCA",
+      "guardian": "Rajesh R",
+      "guardianPhone": "9988776644",
+      "appliedDate": "2026-06-20",
+      "status": "approved"
+    },
+    {
+      "name": "Test",
+      "email": "test@gmail.com",
+      "phone": "9876543210",
+      "department": "MCA",
+      "guardian": "Test GN",
+      "guardianPhone": "9876543211",
+      "id": "ADM-002",
+      "appliedDate": "2026-06-21",
+      "status": "approved"
+    }
+  ]
+}
