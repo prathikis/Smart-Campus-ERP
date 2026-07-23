@@ -94,6 +94,54 @@ export default function SmartCampusApp() {
     title: "", message: "", priority: "normal"
   });
 
+  // New Facilities State
+  const [hostelRooms, setHostelRooms] = useState([]);
+  const [hostelMess, setHostelMess] = useState([]);
+  const [hostelVisitors, setHostelVisitors] = useState([]);
+  const [libraryReservations, setLibraryReservations] = useState([]);
+  const [libraryFines, setLibraryFines] = useState([]);
+  const [salonAppointments, setSalonAppointments] = useState([]);
+  const [sportsBookings, setSportsBookings] = useState([]);
+  const [cafeteriaOrders, setCafeteriaOrders] = useState([]);
+  const [transportRoutes, setTransportRoutes] = useState([]);
+  const [transportPasses, setTransportPasses] = useState([]);
+  const [healthRecords, setHealthRecords] = useState([]);
+
+  // New Facility Forms
+  const [hostelRoomForm, setHostelRoomForm] = useState({
+    roomNumber: "", block: "A", capacity: 3, type: "AC"
+  });
+  const [hostelMessForm, setHostelMessForm] = useState({
+    studentId: "", studentName: "", mealPlan: "standard", startDate: "", endDate: ""
+  });
+  const [hostelVisitorForm, setHostelVisitorForm] = useState({
+    studentId: "", studentName: "", visitorName: "", visitorPhone: "", relation: "", visitDate: "", checkInTime: "", purpose: ""
+  });
+  const [libraryReservationForm, setLibraryReservationForm] = useState({
+    isbn: "", studentId: "", studentName: "", reservationDate: ""
+  });
+  const [libraryFineForm, setLibraryFineForm] = useState({
+    isbn: "", studentId: "", studentName: "", borrowedDate: "", dueDate: "", fineAmount: 0
+  });
+  const [salonAppointmentForm, setSalonAppointmentForm] = useState({
+    studentId: "", studentName: "", serviceType: "Haircut", appointmentDate: "", appointmentTime: "", staff: "", amount: 200
+  });
+  const [sportsBookingForm, setSportsBookingForm] = useState({
+    facilityName: "", studentId: "", studentName: "", bookingDate: "", startTime: "", endTime: "", purpose: ""
+  });
+  const [cafeteriaOrderForm, setCafeteriaOrderForm] = useState({
+    studentId: "", studentName: "", items: [{ name: "", quantity: 1, price: 0 }], totalAmount: 0
+  });
+  const [transportRouteForm, setTransportRouteForm] = useState({
+    routeNumber: "", routeName: "", stops: [], driverName: "", driverPhone: "", vehicleNumber: "", capacity: 40
+  });
+  const [transportPassForm, setTransportPassForm] = useState({
+    studentId: "", studentName: "", routeId: "", expiryDate: ""
+  });
+  const [healthRecordForm, setHealthRecordForm] = useState({
+    studentId: "", studentName: "", diagnosis: "", treatment: "", doctor: "", notes: "", followUpDate: ""
+  });
+
   // --- AUTH CHECK ON MOUNT ---
   useEffect(() => {
     if (!ApiClient.isLoggedIn()) {
@@ -129,7 +177,9 @@ export default function SmartCampusApp() {
   async function fetchAllData() {
     try {
       setLoading(true);
-      const [stList, facList, bList, txnList, actList, anData, notifList, annList, admList] = await Promise.all([
+      const [stList, facList, bList, txnList, actList, anData, notifList, annList, admList, 
+            hRooms, hMess, hVisitors, libRes, libFines, salonAppt, sportsBk, cafOrders, 
+            transRoutes, transPasses, healthRecs] = await Promise.all([
         ApiClient.getStudents(),
         ApiClient.getFaculty(),
         ApiClient.getBooks(),
@@ -138,7 +188,19 @@ export default function SmartCampusApp() {
         ApiClient.getAnalytics(),
         ApiClient.getNotifications(currentUser?.role || "admin"),
         ApiClient.getAnnouncements(),
-        ApiClient.getAdmissions()
+        ApiClient.getAdmissions(),
+        // New facilities
+        ApiClient.getHostelRooms(),
+        ApiClient.getHostelMess(),
+        ApiClient.getHostelVisitors(),
+        ApiClient.getLibraryReservations(),
+        ApiClient.getLibraryFines(),
+        ApiClient.getSalonAppointments(),
+        ApiClient.getSportsBookings(),
+        ApiClient.getCafeteriaOrders(),
+        ApiClient.getTransportRoutes(),
+        ApiClient.getTransportPasses(),
+        ApiClient.getHealthRecords()
       ]);
       setStudents(stList);
       setFaculty(facList);
@@ -149,6 +211,18 @@ export default function SmartCampusApp() {
       setNotifications(notifList);
       setAnnouncements(annList);
       setPendingAdmissions(admList);
+      // New facilities
+      setHostelRooms(hRooms);
+      setHostelMess(hMess);
+      setHostelVisitors(hVisitors);
+      setLibraryReservations(libRes);
+      setLibraryFines(libFines);
+      setSalonAppointments(salonAppt);
+      setSportsBookings(sportsBk);
+      setCafeteriaOrders(cafOrders);
+      setTransportRoutes(transRoutes);
+      setTransportPasses(transPasses);
+      setHealthRecords(healthRecs);
 
       if (stList.length > 0) {
         setSelectedResultStudentId(stList[0].id);
@@ -212,7 +286,14 @@ export default function SmartCampusApp() {
       { id: "library", label: "Library", icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253", roles: ["admin", "faculty", "student"] },
       { id: "admissions", label: "Admissions", icon: "M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z", roles: ["admin"] },
       { id: "announcements", label: "Announcements", icon: "M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z", roles: ["admin", "faculty", "student", "parent"] },
-      { id: "ai-analytics", label: "AI Insights", icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z", roles: ["admin"] }
+      { id: "ai-analytics", label: "AI Insights", icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z", roles: ["admin"] },
+      // New Facilities
+      { id: "hostel", label: "Hostel", icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4", roles: ["admin", "student"] },
+      { id: "salon", label: "Salon", icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z", roles: ["admin", "student"] },
+      { id: "sports", label: "Sports", icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z", roles: ["admin", "student"] },
+      { id: "cafeteria", label: "Cafeteria", icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z", roles: ["admin", "student"] },
+      { id: "transport", label: "Transport", icon: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4", roles: ["admin", "student"] },
+      { id: "health", label: "Health Center", icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z", roles: ["admin", "student"] }
     ];
     const role = currentUser?.role || "admin";
     return allMenus.filter(m => m.roles.includes(role));
@@ -453,6 +534,173 @@ export default function SmartCampusApp() {
       title: "", author: "", isbn: "", status: "Available"
     });
     setModalActive("book");
+  }
+
+  // --- NEW FACILITIES HANDLERS ---
+
+  // Hostel Handlers
+  async function handleHostelRoomSubmit(e) {
+    e.preventDefault();
+    try {
+      await ApiClient.addHostelRoom(hostelRoomForm);
+      showToast(`Room ${hostelRoomForm.roomNumber} added successfully!`);
+      setModalActive(null);
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to add room.", "danger");
+    }
+  }
+
+  async function allocateRoom(roomId) {
+    const studentId = prompt("Enter Student ID to allocate:");
+    if (!studentId) return;
+    try {
+      await ApiClient.allocateHostelRoom(roomId, studentId);
+      showToast("Room allocated successfully!");
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to allocate room.", "danger");
+    }
+  }
+
+  async function handleHostelVisitorSubmit(e) {
+    e.preventDefault();
+    try {
+      await ApiClient.addHostelVisitor(hostelVisitorForm);
+      showToast("Visitor checked in successfully!");
+      setModalActive(null);
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to check in visitor.", "danger");
+    }
+  }
+
+  async function checkoutVisitor(visitorId) {
+    const checkOutTime = new Date().toTimeString().split(" ")[0].substring(0, 5);
+    try {
+      await ApiClient.checkoutHostelVisitor(visitorId, checkOutTime);
+      showToast("Visitor checked out successfully!");
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to check out visitor.", "danger");
+    }
+  }
+
+  // Salon Handlers
+  async function handleSalonAppointmentSubmit(e) {
+    e.preventDefault();
+    try {
+      await ApiClient.addSalonAppointment(salonAppointmentForm);
+      showToast("Appointment booked successfully!");
+      setModalActive(null);
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to book appointment.", "danger");
+    }
+  }
+
+  async function completeSalonAppointment(apptId) {
+    try {
+      await ApiClient.completeSalonAppointment(apptId);
+      showToast("Appointment completed!");
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to complete appointment.", "danger");
+    }
+  }
+
+  async function cancelSalonAppointment(apptId) {
+    try {
+      await ApiClient.deleteSalonAppointment(apptId);
+      showToast("Appointment cancelled!");
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to cancel appointment.", "danger");
+    }
+  }
+
+  // Sports Handlers
+  async function handleSportsBookingSubmit(e) {
+    e.preventDefault();
+    try {
+      await ApiClient.addSportsBooking(sportsBookingForm);
+      showToast("Facility booked successfully!");
+      setModalActive(null);
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to book facility.", "danger");
+    }
+  }
+
+  async function cancelSportsBooking(bookingId) {
+    try {
+      await ApiClient.deleteSportsBooking(bookingId);
+      showToast("Booking cancelled!");
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to cancel booking.", "danger");
+    }
+  }
+
+  // Cafeteria Handlers
+  async function handleCafeteriaOrderSubmit(e) {
+    e.preventDefault();
+    try {
+      await ApiClient.addCafeteriaOrder(cafeteriaOrderForm);
+      showToast("Order placed successfully!");
+      setModalActive(null);
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to place order.", "danger");
+    }
+  }
+
+  async function markOrderReady(orderId) {
+    try {
+      await ApiClient.markCafeteriaOrderReady(orderId);
+      showToast("Order marked as ready!");
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to update order.", "danger");
+    }
+  }
+
+  // Transport Handlers
+  async function handleTransportRouteSubmit(e) {
+    e.preventDefault();
+    try {
+      await ApiClient.addTransportRoute(transportRouteForm);
+      showToast("Route added successfully!");
+      setModalActive(null);
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to add route.", "danger");
+    }
+  }
+
+  async function handleTransportPassSubmit(e) {
+    e.preventDefault();
+    try {
+      await ApiClient.addTransportPass(transportPassForm);
+      showToast("Pass issued successfully!");
+      setModalActive(null);
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to issue pass.", "danger");
+    }
+  }
+
+  // Health Handlers
+  async function handleHealthRecordSubmit(e) {
+    e.preventDefault();
+    try {
+      await ApiClient.addHealthRecord(healthRecordForm);
+      showToast("Health record added successfully!");
+      setModalActive(null);
+      fetchAllData();
+    } catch (err) {
+      showToast("Failed to add record.", "danger");
+    }
   }
 
   async function handleBorrowBook(isbn) {
@@ -1681,6 +1929,340 @@ export default function SmartCampusApp() {
               </div>
             </section>
 
+            {/* 11. HOSTEL MANAGEMENT VIEW */}
+            <section className={`view-section ${activeView === "hostel" ? "active" : ""}`}>
+              <div className="page-actions-row">
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.25rem", fontWeight: 600 }}>Hostel Management</h2>
+                {currentUser?.role === "admin" && (
+                  <button className="btn btn-primary" onClick={() => setModalActive("hostel-room")}>+ Add Room</button>
+                )}
+              </div>
+              
+              <div className="dashboard-grid" style={{ marginBottom: "24px" }}>
+                <div className="metric-card">
+                  <div className="metric-info">
+                    <div className="metric-label">Total Rooms</div>
+                    <div className="metric-value">{hostelRooms.length}</div>
+                  </div>
+                </div>
+                <div className="metric-card">
+                  <div className="metric-info">
+                    <div className="metric-label">Available</div>
+                    <div className="metric-value">{hostelRooms.filter(r => r.status === "available").length}</div>
+                  </div>
+                </div>
+                <div className="metric-card">
+                  <div className="metric-info">
+                    <div className="metric-label">Occupied</div>
+                    <div className="metric-value">{hostelRooms.filter(r => r.status === "occupied").length}</div>
+                  </div>
+                </div>
+                <div className="metric-card">
+                  <div className="metric-info">
+                    <div className="metric-label">Active Visitors</div>
+                    <div className="metric-value">{hostelVisitors.filter(v => v.status === "checked-in").length}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="data-table-container">
+                <h3>Room List</h3>
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Room Number</th>
+                      <th>Block</th>
+                      <th>Capacity</th>
+                      <th>Occupied</th>
+                      <th>Type</th>
+                      <th>Status</th>
+                      {currentUser?.role === "admin" && <th>Actions</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {hostelRooms.map(room => (
+                      <tr key={room.id}>
+                        <td>{room.roomNumber}</td>
+                        <td>{room.block}</td>
+                        <td>{room.capacity}</td>
+                        <td>{room.occupied}</td>
+                        <td>{room.type}</td>
+                        <td><span className={`status-badge ${room.status}`}>{room.status}</span></td>
+                        {currentUser?.role === "admin" && (
+                          <td>
+                            <button className="btn btn-sm btn-secondary" onClick={() => allocateRoom(room.id)}>Allocate</button>
+                          </td>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="data-table-container" style={{ marginTop: "24px" }}>
+                <h3>Visitor Log</h3>
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Visitor Name</th>
+                      <th>Student</th>
+                      <th>Relation</th>
+                      <th>Visit Date</th>
+                      <th>Check In</th>
+                      <th>Status</th>
+                      {currentUser?.role === "admin" && <th>Actions</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {hostelVisitors.map(visitor => (
+                      <tr key={visitor.id}>
+                        <td>{visitor.visitorName}</td>
+                        <td>{visitor.studentName}</td>
+                        <td>{visitor.relation}</td>
+                        <td>{visitor.visitDate}</td>
+                        <td>{visitor.checkInTime}</td>
+                        <td><span className={`status-badge ${visitor.status}`}>{visitor.status}</span></td>
+                        {currentUser?.role === "admin" && visitor.status === "checked-in" && (
+                          <td>
+                            <button className="btn btn-sm btn-secondary" onClick={() => checkoutVisitor(visitor.id)}>Check Out</button>
+                          </td>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            {/* 12. SALON SERVICES VIEW */}
+            <section className={`view-section ${activeView === "salon" ? "active" : ""}`}>
+              <div className="page-actions-row">
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.25rem", fontWeight: 600 }}>Salon Services</h2>
+                <button className="btn btn-primary" onClick={() => setModalActive("salon-appointment")}>+ Book Appointment</button>
+              </div>
+
+              <div className="data-table-container">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Service</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Staff</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {salonAppointments.map(appt => (
+                      <tr key={appt.id}>
+                        <td>{appt.studentName}</td>
+                        <td>{appt.serviceType}</td>
+                        <td>{appt.appointmentDate}</td>
+                        <td>{appt.appointmentTime}</td>
+                        <td>{appt.staff}</td>
+                        <td>₹{appt.amount}</td>
+                        <td><span className={`status-badge ${appt.status}`}>{appt.status}</span></td>
+                        <td>
+                          {currentUser?.role === "admin" && appt.status === "scheduled" && (
+                            <button className="btn btn-sm btn-success" onClick={() => completeSalonAppointment(appt.id)}>Complete</button>
+                          )}
+                          {appt.status === "scheduled" && (
+                            <button className="btn btn-sm btn-danger" onClick={() => cancelSalonAppointment(appt.id)}>Cancel</button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            {/* 13. SPORTS FACILITIES VIEW */}
+            <section className={`view-section ${activeView === "sports" ? "active" : ""}`}>
+              <div className="page-actions-row">
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.25rem", fontWeight: 600 }}>Sports Facilities</h2>
+                <button className="btn btn-primary" onClick={() => setModalActive("sports-booking")}>+ Book Facility</button>
+              </div>
+
+              <div className="data-table-container">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Facility</th>
+                      <th>Student</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Purpose</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sportsBookings.map(booking => (
+                      <tr key={booking.id}>
+                        <td>{booking.facilityName}</td>
+                        <td>{booking.studentName}</td>
+                        <td>{booking.bookingDate}</td>
+                        <td>{booking.startTime} - {booking.endTime}</td>
+                        <td>{booking.purpose}</td>
+                        <td><span className={`status-badge ${booking.status}`}>{booking.status}</span></td>
+                        <td>
+                          <button className="btn btn-sm btn-danger" onClick={() => cancelSportsBooking(booking.id)}>Cancel</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            {/* 14. CAFETERIA VIEW */}
+            <section className={`view-section ${activeView === "cafeteria" ? "active" : ""}`}>
+              <div className="page-actions-row">
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.25rem", fontWeight: 600 }}>Cafeteria / Canteen</h2>
+                <button className="btn btn-primary" onClick={() => setModalActive("cafeteria-order")}>+ Place Order</button>
+              </div>
+
+              <div className="data-table-container">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Items</th>
+                      <th>Total</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Status</th>
+                      {currentUser?.role === "admin" && <th>Actions</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cafeteriaOrders.map(order => (
+                      <tr key={order.id}>
+                        <td>{order.studentName}</td>
+                        <td>{Array.isArray(order.items) ? order.items.map(i => `${i.name} x${i.quantity}`).join(", ") : order.items}</td>
+                        <td>₹{order.totalAmount}</td>
+                        <td>{order.orderDate}</td>
+                        <td>{order.orderTime}</td>
+                        <td><span className={`status-badge ${order.status}`}>{order.status}</span></td>
+                        {currentUser?.role === "admin" && order.status === "pending" && (
+                          <td>
+                            <button className="btn btn-sm btn-success" onClick={() => markOrderReady(order.id)}>Mark Ready</button>
+                          </td>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            {/* 15. TRANSPORT VIEW */}
+            <section className={`view-section ${activeView === "transport" ? "active" : ""}`}>
+              <div className="page-actions-row">
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.25rem", fontWeight: 600 }}>Transportation</h2>
+                {currentUser?.role === "admin" && (
+                  <button className="btn btn-primary" onClick={() => setModalActive("transport-route")}>+ Add Route</button>
+                )}
+              </div>
+
+              <div className="data-table-container">
+                <h3>Bus Routes</h3>
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Route Number</th>
+                      <th>Route Name</th>
+                      <th>Driver</th>
+                      <th>Vehicle</th>
+                      <th>Capacity</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transportRoutes.map(route => (
+                      <tr key={route.id}>
+                        <td>{route.routeNumber}</td>
+                        <td>{route.routeName}</td>
+                        <td>{route.driverName}</td>
+                        <td>{route.vehicleNumber}</td>
+                        <td>{route.capacity}</td>
+                        <td><span className={`status-badge ${route.status}`}>{route.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="page-actions-row" style={{ marginTop: "24px" }}>
+                <h3>Transport Passes</h3>
+                <button className="btn btn-primary" onClick={() => setModalActive("transport-pass")}>+ Issue Pass</button>
+              </div>
+
+              <div className="data-table-container">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Route</th>
+                      <th>Issue Date</th>
+                      <th>Expiry Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transportPasses.map(pass => (
+                      <tr key={pass.id}>
+                        <td>{pass.studentName}</td>
+                        <td>{pass.routeId}</td>
+                        <td>{pass.issueDate}</td>
+                        <td>{pass.expiryDate}</td>
+                        <td><span className={`status-badge ${pass.status}`}>{pass.status}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            {/* 16. HEALTH CENTER VIEW */}
+            <section className={`view-section ${activeView === "health" ? "active" : ""}`}>
+              <div className="page-actions-row">
+                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.25rem", fontWeight: 600 }}>Health Center</h2>
+                <button className="btn btn-primary" onClick={() => setModalActive("health-record")}>+ Add Record</button>
+              </div>
+
+              <div className="data-table-container">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Visit Date</th>
+                      <th>Diagnosis</th>
+                      <th>Treatment</th>
+                      <th>Doctor</th>
+                      <th>Follow-up</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {healthRecords.map(record => (
+                      <tr key={record.id}>
+                        <td>{record.studentName}</td>
+                        <td>{record.visitDate}</td>
+                        <td>{record.diagnosis}</td>
+                        <td>{record.treatment}</td>
+                        <td>{record.doctor}</td>
+                        <td>{record.followUpDate || "-"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
           </div>
         )}
       </main>
@@ -2026,6 +2608,310 @@ export default function SmartCampusApp() {
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={() => setModalActive(null)}>Cancel</button>
                 <button type="submit" className="btn btn-primary">Publish</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* G. HOSTEL ROOM MODAL */}
+      {modalActive === "hostel-room" && (
+        <div className="modal-overlay active">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Add Hostel Room</h3>
+              <button className="modal-close-btn" onClick={() => setModalActive(null)}>&times;</button>
+            </div>
+            <form onSubmit={handleHostelRoomSubmit}>
+              <div className="form-group">
+                <label className="form-label">Room Number</label>
+                <input type="text" className="form-control" required value={hostelRoomForm.roomNumber} onChange={e => setHostelRoomForm({ ...hostelRoomForm, roomNumber: e.target.value })} />
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Block</label>
+                  <select className="form-control" value={hostelRoomForm.block} onChange={e => setHostelRoomForm({ ...hostelRoomForm, block: e.target.value })}>
+                    <option value="A">Block A</option>
+                    <option value="B">Block B</option>
+                    <option value="C">Block C</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Capacity</label>
+                  <input type="number" className="form-control" required value={hostelRoomForm.capacity} onChange={e => setHostelRoomForm({ ...hostelRoomForm, capacity: parseInt(e.target.value) })} />
+                </div>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Type</label>
+                <select className="form-control" value={hostelRoomForm.type} onChange={e => setHostelRoomForm({ ...hostelRoomForm, type: e.target.value })}>
+                  <option value="AC">AC</option>
+                  <option value="Non-AC">Non-AC</option>
+                </select>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setModalActive(null)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Add Room</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* H. SALON APPOINTMENT MODAL */}
+      {modalActive === "salon-appointment" && (
+        <div className="modal-overlay active">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Book Salon Appointment</h3>
+              <button className="modal-close-btn" onClick={() => setModalActive(null)}>&times;</button>
+            </div>
+            <form onSubmit={handleSalonAppointmentSubmit}>
+              <div className="form-group">
+                <label className="form-label">Student Name</label>
+                <input type="text" className="form-control" required value={salonAppointmentForm.studentName} onChange={e => setSalonAppointmentForm({ ...salonAppointmentForm, studentName: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Service Type</label>
+                <select className="form-control" value={salonAppointmentForm.serviceType} onChange={e => setSalonAppointmentForm({ ...salonAppointmentForm, serviceType: e.target.value })}>
+                  <option value="Haircut">Haircut</option>
+                  <option value="Styling">Styling</option>
+                  <option value="Facial">Facial</option>
+                  <option value="Massage">Massage</option>
+                </select>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Date</label>
+                  <input type="date" className="form-control" required value={salonAppointmentForm.appointmentDate} onChange={e => setSalonAppointmentForm({ ...salonAppointmentForm, appointmentDate: e.target.value })} />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Time</label>
+                  <input type="time" className="form-control" required value={salonAppointmentForm.appointmentTime} onChange={e => setSalonAppointmentForm({ ...salonAppointmentForm, appointmentTime: e.target.value })} />
+                </div>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Staff</label>
+                <input type="text" className="form-control" required value={salonAppointmentForm.staff} onChange={e => setSalonAppointmentForm({ ...salonAppointmentForm, staff: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Amount (₹)</label>
+                <input type="number" className="form-control" required value={salonAppointmentForm.amount} onChange={e => setSalonAppointmentForm({ ...salonAppointmentForm, amount: parseInt(e.target.value) })} />
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setModalActive(null)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Book</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* I. SPORTS BOOKING MODAL */}
+      {modalActive === "sports-booking" && (
+        <div className="modal-overlay active">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Book Sports Facility</h3>
+              <button className="modal-close-btn" onClick={() => setModalActive(null)}>&times;</button>
+            </div>
+            <form onSubmit={handleSportsBookingSubmit}>
+              <div className="form-group">
+                <label className="form-label">Student Name</label>
+                <input type="text" className="form-control" required value={sportsBookingForm.studentName} onChange={e => setSportsBookingForm({ ...sportsBookingForm, studentName: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Facility</label>
+                <select className="form-control" value={sportsBookingForm.facilityName} onChange={e => setSportsBookingForm({ ...sportsBookingForm, facilityName: e.target.value })}>
+                  <option value="Football Ground">Football Ground</option>
+                  <option value="Basketball Court">Basketball Court</option>
+                  <option value="Tennis Court">Tennis Court</option>
+                  <option value="Cricket Net">Cricket Net</option>
+                  <option value="Gym">Gym</option>
+                </select>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Date</label>
+                  <input type="date" className="form-control" required value={sportsBookingForm.bookingDate} onChange={e => setSportsBookingForm({ ...sportsBookingForm, bookingDate: e.target.value })} />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Purpose</label>
+                  <input type="text" className="form-control" required value={sportsBookingForm.purpose} onChange={e => setSportsBookingForm({ ...sportsBookingForm, purpose: e.target.value })} />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Start Time</label>
+                  <input type="time" className="form-control" required value={sportsBookingForm.startTime} onChange={e => setSportsBookingForm({ ...sportsBookingForm, startTime: e.target.value })} />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">End Time</label>
+                  <input type="time" className="form-control" required value={sportsBookingForm.endTime} onChange={e => setSportsBookingForm({ ...sportsBookingForm, endTime: e.target.value })} />
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setModalActive(null)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Book</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* J. CAFETERIA ORDER MODAL */}
+      {modalActive === "cafeteria-order" && (
+        <div className="modal-overlay active">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Place Cafeteria Order</h3>
+              <button className="modal-close-btn" onClick={() => setModalActive(null)}>&times;</button>
+            </div>
+            <form onSubmit={handleCafeteriaOrderSubmit}>
+              <div className="form-group">
+                <label className="form-label">Student Name</label>
+                <input type="text" className="form-control" required value={cafeteriaOrderForm.studentName} onChange={e => setCafeteriaOrderForm({ ...cafeteriaOrderForm, studentName: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Items (comma separated: name,quantity,price)</label>
+                <input type="text" className="form-control" required placeholder="e.g., Burger,1,50, Coke,1,30" onChange={e => {
+                  const itemsStr = e.target.value;
+                  const items = itemsStr.split(',').reduce((acc, item, i, arr) => {
+                    if (i % 3 === 0) acc.push({ name: item.trim(), quantity: 1, price: 0 });
+                    else if (i % 3 === 1) acc[acc.length - 1].quantity = parseInt(item.trim());
+                    else acc[acc.length - 1].price = parseInt(item.trim());
+                    return acc;
+                  }, []);
+                  const total = items.reduce((sum, item) => sum + (item.quantity * item.price), 0);
+                  setCafeteriaOrderForm({ ...cafeteriaOrderForm, items, totalAmount: total });
+                }} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Total Amount</label>
+                <input type="number" className="form-control" required value={cafeteriaOrderForm.totalAmount} onChange={e => setCafeteriaOrderForm({ ...cafeteriaOrderForm, totalAmount: parseInt(e.target.value) })} />
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setModalActive(null)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Place Order</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* K. TRANSPORT ROUTE MODAL */}
+      {modalActive === "transport-route" && (
+        <div className="modal-overlay active">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Add Transport Route</h3>
+              <button className="modal-close-btn" onClick={() => setModalActive(null)}>&times;</button>
+            </div>
+            <form onSubmit={handleTransportRouteSubmit}>
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Route Number</label>
+                  <input type="text" className="form-control" required value={transportRouteForm.routeNumber} onChange={e => setTransportRouteForm({ ...transportRouteForm, routeNumber: e.target.value })} />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Route Name</label>
+                  <input type="text" className="form-control" required value={transportRouteForm.routeName} onChange={e => setTransportRouteForm({ ...transportRouteForm, routeName: e.target.value })} />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Driver Name</label>
+                  <input type="text" className="form-control" required value={transportRouteForm.driverName} onChange={e => setTransportRouteForm({ ...transportRouteForm, driverName: e.target.value })} />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Driver Phone</label>
+                  <input type="text" className="form-control" required value={transportRouteForm.driverPhone} onChange={e => setTransportRouteForm({ ...transportRouteForm, driverPhone: e.target.value })} />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Vehicle Number</label>
+                  <input type="text" className="form-control" required value={transportRouteForm.vehicleNumber} onChange={e => setTransportRouteForm({ ...transportRouteForm, vehicleNumber: e.target.value })} />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Capacity</label>
+                  <input type="number" className="form-control" required value={transportRouteForm.capacity} onChange={e => setTransportRouteForm({ ...transportRouteForm, capacity: parseInt(e.target.value) })} />
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setModalActive(null)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Add Route</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* L. TRANSPORT PASS MODAL */}
+      {modalActive === "transport-pass" && (
+        <div className="modal-overlay active">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Issue Transport Pass</h3>
+              <button className="modal-close-btn" onClick={() => setModalActive(null)}>&times;</button>
+            </div>
+            <form onSubmit={handleTransportPassSubmit}>
+              <div className="form-group">
+                <label className="form-label">Student Name</label>
+                <input type="text" className="form-control" required value={transportPassForm.studentName} onChange={e => setTransportPassForm({ ...transportPassForm, studentName: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Route ID</label>
+                <input type="text" className="form-control" required value={transportPassForm.routeId} onChange={e => setTransportPassForm({ ...transportPassForm, routeId: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Expiry Date</label>
+                <input type="date" className="form-control" required value={transportPassForm.expiryDate} onChange={e => setTransportPassForm({ ...transportPassForm, expiryDate: e.target.value })} />
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setModalActive(null)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Issue Pass</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* M. HEALTH RECORD MODAL */}
+      {modalActive === "health-record" && (
+        <div className="modal-overlay active">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Add Health Record</h3>
+              <button className="modal-close-btn" onClick={() => setModalActive(null)}>&times;</button>
+            </div>
+            <form onSubmit={handleHealthRecordSubmit}>
+              <div className="form-group">
+                <label className="form-label">Student Name</label>
+                <input type="text" className="form-control" required value={healthRecordForm.studentName} onChange={e => setHealthRecordForm({ ...healthRecordForm, studentName: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Diagnosis</label>
+                <input type="text" className="form-control" required value={healthRecordForm.diagnosis} onChange={e => setHealthRecordForm({ ...healthRecordForm, diagnosis: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Treatment</label>
+                <input type="text" className="form-control" required value={healthRecordForm.treatment} onChange={e => setHealthRecordForm({ ...healthRecordForm, treatment: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Doctor</label>
+                <input type="text" className="form-control" required value={healthRecordForm.doctor} onChange={e => setHealthRecordForm({ ...healthRecordForm, doctor: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Notes</label>
+                <textarea className="form-control" value={healthRecordForm.notes} onChange={e => setHealthRecordForm({ ...healthRecordForm, notes: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Follow-up Date</label>
+                <input type="date" className="form-control" value={healthRecordForm.followUpDate} onChange={e => setHealthRecordForm({ ...healthRecordForm, followUpDate: e.target.value })} />
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={() => setModalActive(null)}>Cancel</button>
+                <button type="submit" className="btn btn-primary">Add Record</button>
               </div>
             </form>
           </div>

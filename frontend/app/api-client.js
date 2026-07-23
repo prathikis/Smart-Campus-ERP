@@ -219,4 +219,203 @@ export const ApiClient = {
     });
     return res.json();
   },
+
+  // ============= NEW FACILITIES =============
+
+  // ============= HOSTEL MANAGEMENT =============
+  async getHostelRooms() {
+    const res = await fetch(`${API_BASE}/hostel/rooms`, { headers: getAuthHeaders() });
+    return res.json();
+  },
+  async addHostelRoom(room) {
+    const res = await fetch(`${API_BASE}/hostel/rooms`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify(room),
+    });
+    return res.json();
+  },
+  async allocateHostelRoom(id, studentId) {
+    const res = await fetch(`${API_BASE}/hostel/rooms/${id}/allocate`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify({ studentId }),
+    });
+    return res.json();
+  },
+  async getHostelMess() {
+    const res = await fetch(`${API_BASE}/hostel/mess`, { headers: getAuthHeaders() });
+    return res.json();
+  },
+  async addHostelMess(mess) {
+    const res = await fetch(`${API_BASE}/hostel/mess`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify(mess),
+    });
+    return res.json();
+  },
+  async getHostelVisitors() {
+    const res = await fetch(`${API_BASE}/hostel/visitors`, { headers: getAuthHeaders() });
+    return res.json();
+  },
+  async addHostelVisitor(visitor) {
+    const res = await fetch(`${API_BASE}/hostel/visitors`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify(visitor),
+    });
+    return res.json();
+  },
+  async checkoutHostelVisitor(id, checkOutTime) {
+    const res = await fetch(`${API_BASE}/hostel/visitors/${id}/checkout`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify({ checkOutTime }),
+    });
+    return res.json();
+  },
+
+  // ============= LIBRARY MANAGEMENT (ENHANCED) =============
+  async getLibraryReservations() {
+    const res = await fetch(`${API_BASE}/library/reservations`, { headers: getAuthHeaders() });
+    return res.json();
+  },
+  async addLibraryReservation(reservation) {
+    const res = await fetch(`${API_BASE}/library/reservations`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify(reservation),
+    });
+    return res.json();
+  },
+  async getLibraryFines() {
+    const res = await fetch(`${API_BASE}/library/fines`, { headers: getAuthHeaders() });
+    return res.json();
+  },
+  async addLibraryFine(fine) {
+    const res = await fetch(`${API_BASE}/library/fines`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify(fine),
+    });
+    return res.json();
+  },
+  async payLibraryFine(id) {
+    const res = await fetch(`${API_BASE}/library/fines/${id}/pay`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+    });
+    return res.json();
+  },
+
+  // ============= SALON SERVICES =============
+  async getSalonAppointments() {
+    const res = await fetch(`${API_BASE}/salon/appointments`, { headers: getAuthHeaders() });
+    return res.json();
+  },
+  async addSalonAppointment(appointment) {
+    const res = await fetch(`${API_BASE}/salon/appointments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify(appointment),
+    });
+    return res.json();
+  },
+  async completeSalonAppointment(id) {
+    const res = await fetch(`${API_BASE}/salon/appointments/${id}/complete`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+    });
+    return res.json();
+  },
+  async deleteSalonAppointment(id) {
+    const res = await fetch(`${API_BASE}/salon/appointments/${id}`, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    });
+    return res.json();
+  },
+
+  // ============= SPORTS FACILITIES =============
+  async getSportsBookings() {
+    const res = await fetch(`${API_BASE}/sports/bookings`, { headers: getAuthHeaders() });
+    return res.json();
+  },
+  async addSportsBooking(booking) {
+    const res = await fetch(`${API_BASE}/sports/bookings`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify(booking),
+    });
+    return res.json();
+  },
+  async deleteSportsBooking(id) {
+    const res = await fetch(`${API_BASE}/sports/bookings/${id}`, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    });
+    return res.json();
+  },
+
+  // ============= CAFETERIA / CANTEEN =============
+  async getCafeteriaOrders() {
+    const res = await fetch(`${API_BASE}/cafeteria/orders`, { headers: getAuthHeaders() });
+    return res.json();
+  },
+  async addCafeteriaOrder(order) {
+    const res = await fetch(`${API_BASE}/cafeteria/orders`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify(order),
+    });
+    return res.json();
+  },
+  async markCafeteriaOrderReady(id) {
+    const res = await fetch(`${API_BASE}/cafeteria/orders/${id}/ready`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+    });
+    return res.json();
+  },
+
+  // ============= TRANSPORTATION =============
+  async getTransportRoutes() {
+    const res = await fetch(`${API_BASE}/transport/routes`, { headers: getAuthHeaders() });
+    return res.json();
+  },
+  async addTransportRoute(route) {
+    const res = await fetch(`${API_BASE}/transport/routes`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify(route),
+    });
+    return res.json();
+  },
+  async getTransportPasses() {
+    const res = await fetch(`${API_BASE}/transport/passes`, { headers: getAuthHeaders() });
+    return res.json();
+  },
+  async addTransportPass(pass) {
+    const res = await fetch(`${API_BASE}/transport/passes`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify(pass),
+    });
+    return res.json();
+  },
+
+  // ============= HEALTH CENTER =============
+  async getHealthRecords() {
+    const res = await fetch(`${API_BASE}/health/records`, { headers: getAuthHeaders() });
+    return res.json();
+  },
+  async addHealthRecord(record) {
+    const res = await fetch(`${API_BASE}/health/records`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+      body: JSON.stringify(record),
+    });
+    return res.json();
+  },
 };

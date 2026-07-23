@@ -564,6 +564,427 @@ app.put("/api/admissions/:id/reject", async (req, res) => {
   }
 });
 
+// ============= NEW FACILITY ENDPOINTS =============
+
+// ============= HOSTEL MANAGEMENT =============
+
+app.get("/api/hostel/rooms", async (req, res) => {
+  try {
+    const [rooms] = await db.query("SELECT * FROM hostel_rooms");
+    res.json(rooms);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/hostel/rooms", async (req, res) => {
+  try {
+    const room = req.body;
+    const [countResult] = await db.query("SELECT COUNT(*) as count FROM hostel_rooms");
+    const count = countResult[0].count;
+    room.id = `ROM-${String(count + 1).padStart(3, "0")}`;
+    room.occupied = 0;
+    room.status = "available";
+    
+    await db.query(
+      "INSERT INTO hostel_rooms (id, roomNumber, block, capacity, occupied, type, status) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [room.id, room.roomNumber, room.block, room.capacity, room.occupied, room.type, room.status]
+    );
+    await logActivity(`New hostel room added: ${room.roomNumber}`, "home");
+    res.status(201).json(room);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put("/api/hostel/rooms/:id/allocate", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { studentId } = req.body;
+    await db.query("UPDATE hostel_rooms SET occupied = occupied + 1, status = 'occupied' WHERE id = ?", [id]);
+    await logActivity(`Room allocated to student ${studentId}`, "home");
+    const [updated] = await db.query("SELECT * FROM hostel_rooms WHERE id = ?", [id]);
+    res.json(updated[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/hostel/mess", async (req, res) => {
+  try {
+    const [mess] = await db.query("SELECT * FROM hostel_mess");
+    res.json(mess);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/hostel/mess", async (req, res) => {
+  try {
+    const mess = req.body;
+    const [countResult] = await db.query("SELECT COUNT(*) as count FROM hostel_mess");
+    const count = countResult[0].count;
+    mess.id = `MES-${String(count + 1).padStart(3, "0")}`;
+    mess.status = "active";
+    
+    await db.query(
+      "INSERT INTO hostel_mess (id, studentId, studentName, mealPlan, startDate, endDate, status) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [mess.id, mess.studentId, mess.studentName, mess.mealPlan, mess.startDate, mess.endDate, mess.status]
+    );
+    await logActivity(`Mess plan registered for ${mess.studentName}`, "home");
+    res.status(201).json(mess);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/hostel/visitors", async (req, res) => {
+  try {
+    const [visitors] = await db.query("SELECT * FROM hostel_visitors ORDER BY visitDate DESC");
+    res.json(visitors);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/hostel/visitors", async (req, res) => {
+  try {
+    const visitor = req.body;
+    const [countResult] = await db.query("SELECT COUNT(*) as count FROM hostel_visitors");
+    const count = countResult[0].count;
+    visitor.id = `VIS-${String(count + 1).padStart(3, "0")}`;
+    visitor.status = "checked-in";
+    visitor.checkOutTime = null;
+    
+    await db.query(
+      "INSERT INTO hostel_visitors (id, studentId, studentName, visitorName, visitorPhone, relation, visitDate, checkInTime, checkOutTime, purpose, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [visitor.id, visitor.studentId, visitor.studentName, visitor.visitorName, visitor.visitorPhone, visitor.relation, visitor.visitDate, visitor.checkInTime, visitor.checkOutTime, visitor.purpose, visitor.status]
+    );
+    await logActivity(`Visitor ${visitor.visitorName} checked in for ${visitor.studentName}`, "home");
+    res.status(201).json(visitor);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put("/api/hostel/visitors/:id/checkout", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { checkOutTime } = req.body;
+    await db.query("UPDATE hostel_visitors SET status = 'checked-out', checkOutTime = ? WHERE id = ?", [checkOutTime, id]);
+    await logActivity(`Visitor checked out`, "home");
+    const [updated] = await db.query("SELECT * FROM hostel_visitors WHERE id = ?", [id]);
+    res.json(updated[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============= LIBRARY MANAGEMENT (ENHANCED) =============
+
+app.get("/api/library/reservations", async (req, res) => {
+  try {
+    const [reservations] = await db.query("SELECT * FROM library_reservations ORDER BY reservationDate DESC");
+    res.json(reservations);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/library/reservations", async (req, res) => {
+  try {
+    const reservation = req.body;
+    const [countResult] = await db.query("SELECT COUNT(*) as count FROM library_reservations");
+    const count = countResult[0].count;
+    reservation.id = `RES-${String(count + 1).padStart(3, "0")}`;
+    reservation.status = "pending";
+    
+    await db.query(
+      "INSERT INTO library_reservations (id, isbn, studentId, studentName, reservationDate, status) VALUES (?, ?, ?, ?, ?, ?)",
+      [reservation.id, reservation.isbn, reservation.studentId, reservation.studentName, reservation.reservationDate, reservation.status]
+    );
+    await logActivity(`Book reservation by ${reservation.studentName}`, "book");
+    res.status(201).json(reservation);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/library/fines", async (req, res) => {
+  try {
+    const [fines] = await db.query("SELECT * FROM library_fines ORDER BY dueDate DESC");
+    res.json(fines);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/library/fines", async (req, res) => {
+  try {
+    const fine = req.body;
+    const [countResult] = await db.query("SELECT COUNT(*) as count FROM library_fines");
+    const count = countResult[0].count;
+    fine.id = `FIN-${String(count + 1).padStart(3, "0")}`;
+    fine.status = "unpaid";
+    
+    await db.query(
+      "INSERT INTO library_fines (id, isbn, studentId, studentName, borrowedDate, dueDate, returnDate, fineAmount, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [fine.id, fine.isbn, fine.studentId, fine.studentName, fine.borrowedDate, fine.dueDate, fine.returnDate, fine.fineAmount, fine.status]
+    );
+    await logActivity(`Fine recorded for ${fine.studentName}`, "alert");
+    res.status(201).json(fine);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put("/api/library/fines/:id/pay", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await db.query("UPDATE library_fines SET status = 'paid' WHERE id = ?", [id]);
+    await logActivity(`Library fine paid`, "payment");
+    const [updated] = await db.query("SELECT * FROM library_fines WHERE id = ?", [id]);
+    res.json(updated[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============= SALON SERVICES =============
+
+app.get("/api/salon/appointments", async (req, res) => {
+  try {
+    const [appointments] = await db.query("SELECT * FROM salon_appointments ORDER BY appointmentDate DESC");
+    res.json(appointments);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/salon/appointments", async (req, res) => {
+  try {
+    const appointment = req.body;
+    const [countResult] = await db.query("SELECT COUNT(*) as count FROM salon_appointments");
+    const count = countResult[0].count;
+    appointment.id = `SAL-${String(count + 1).padStart(3, "0")}`;
+    appointment.status = "scheduled";
+    
+    await db.query(
+      "INSERT INTO salon_appointments (id, studentId, studentName, serviceType, appointmentDate, appointmentTime, staff, status, amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [appointment.id, appointment.studentId, appointment.studentName, appointment.serviceType, appointment.appointmentDate, appointment.appointmentTime, appointment.staff, appointment.status, appointment.amount]
+    );
+    await logActivity(`Salon appointment booked by ${appointment.studentName}`, "profile");
+    res.status(201).json(appointment);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put("/api/salon/appointments/:id/complete", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await db.query("UPDATE salon_appointments SET status = 'completed' WHERE id = ?", [id]);
+    await logActivity(`Salon appointment completed`, "profile");
+    const [updated] = await db.query("SELECT * FROM salon_appointments WHERE id = ?", [id]);
+    res.json(updated[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete("/api/salon/appointments/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await db.query("DELETE FROM salon_appointments WHERE id = ?", [id]);
+    await logActivity(`Salon appointment cancelled`, "alert");
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============= SPORTS FACILITIES =============
+
+app.get("/api/sports/bookings", async (req, res) => {
+  try {
+    const [bookings] = await db.query("SELECT * FROM sports_bookings ORDER BY bookingDate DESC");
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/sports/bookings", async (req, res) => {
+  try {
+    const booking = req.body;
+    const [countResult] = await db.query("SELECT COUNT(*) as count FROM sports_bookings");
+    const count = countResult[0].count;
+    booking.id = `SPT-${String(count + 1).padStart(3, "0")}`;
+    booking.status = "confirmed";
+    
+    await db.query(
+      "INSERT INTO sports_bookings (id, facilityName, studentId, studentName, bookingDate, startTime, endTime, purpose, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [booking.id, booking.facilityName, booking.studentId, booking.studentName, booking.bookingDate, booking.startTime, booking.endTime, booking.purpose, booking.status]
+    );
+    await logActivity(`Sports facility booked: ${booking.facilityName} by ${booking.studentName}`, "profile");
+    res.status(201).json(booking);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete("/api/sports/bookings/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await db.query("DELETE FROM sports_bookings WHERE id = ?", [id]);
+    await logActivity(`Sports booking cancelled`, "alert");
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============= CAFETERIA / CANTEEN =============
+
+app.get("/api/cafeteria/orders", async (req, res) => {
+  try {
+    const [orders] = await db.query("SELECT * FROM cafeteria_orders ORDER BY orderDate DESC");
+    const mapped = orders.map(o => ({
+      ...o,
+      items: typeof o.items === "string" ? JSON.parse(o.items) : o.items
+    }));
+    res.json(mapped);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/cafeteria/orders", async (req, res) => {
+  try {
+    const order = req.body;
+    const [countResult] = await db.query("SELECT COUNT(*) as count FROM cafeteria_orders");
+    const count = countResult[0].count;
+    order.id = `CAF-${String(count + 1).padStart(3, "0")}`;
+    order.status = "pending";
+    order.orderDate = new Date().toISOString().split("T")[0];
+    order.orderTime = new Date().toTimeString().split(" ")[0].substring(0, 5);
+    
+    await db.query(
+      "INSERT INTO cafeteria_orders (id, studentId, studentName, items, totalAmount, orderDate, orderTime, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [order.id, order.studentId, order.studentName, JSON.stringify(order.items), order.totalAmount, order.orderDate, order.orderTime, order.status]
+    );
+    await logActivity(`Cafeteria order by ${order.studentName}`, "payment");
+    res.status(201).json(order);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put("/api/cafeteria/orders/:id/ready", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await db.query("UPDATE cafeteria_orders SET status = 'ready' WHERE id = ?", [id]);
+    await logActivity(`Cafeteria order ready`, "profile");
+    const [updated] = await db.query("SELECT * FROM cafeteria_orders WHERE id = ?", [id]);
+    res.json(updated[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============= TRANSPORTATION =============
+
+app.get("/api/transport/routes", async (req, res) => {
+  try {
+    const [routes] = await db.query("SELECT * FROM transport_routes");
+    const mapped = routes.map(r => ({
+      ...r,
+      stops: typeof r.stops === "string" ? JSON.parse(r.stops) : r.stops
+    }));
+    res.json(mapped);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/transport/routes", async (req, res) => {
+  try {
+    const route = req.body;
+    const [countResult] = await db.query("SELECT COUNT(*) as count FROM transport_routes");
+    const count = countResult[0].count;
+    route.id = `RTE-${String(count + 1).padStart(3, "0")}`;
+    route.status = "active";
+    
+    await db.query(
+      "INSERT INTO transport_routes (id, routeNumber, routeName, stops, driverName, driverPhone, vehicleNumber, capacity, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [route.id, route.routeNumber, route.routeName, JSON.stringify(route.stops), route.driverName, route.driverPhone, route.vehicleNumber, route.capacity, route.status]
+    );
+    await logActivity(`New transport route added: ${route.routeName}`, "alert");
+    res.status(201).json(route);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/transport/passes", async (req, res) => {
+  try {
+    const [passes] = await db.query("SELECT * FROM transport_passes ORDER BY issueDate DESC");
+    res.json(passes);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/transport/passes", async (req, res) => {
+  try {
+    const pass = req.body;
+    const [countResult] = await db.query("SELECT COUNT(*) as count FROM transport_passes");
+    const count = countResult[0].count;
+    pass.id = `PAS-${String(count + 1).padStart(3, "0")}`;
+    pass.status = "active";
+    pass.issueDate = new Date().toISOString().split("T")[0];
+    
+    await db.query(
+      "INSERT INTO transport_passes (id, studentId, studentName, routeId, issueDate, expiryDate, status) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [pass.id, pass.studentId, pass.studentName, pass.routeId, pass.issueDate, pass.expiryDate, pass.status]
+    );
+    await logActivity(`Transport pass issued to ${pass.studentName}`, "profile");
+    res.status(201).json(pass);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============= HEALTH CENTER =============
+
+app.get("/api/health/records", async (req, res) => {
+  try {
+    const [records] = await db.query("SELECT * FROM health_records ORDER BY visitDate DESC");
+    res.json(records);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/health/records", async (req, res) => {
+  try {
+    const record = req.body;
+    const [countResult] = await db.query("SELECT COUNT(*) as count FROM health_records");
+    const count = countResult[0].count;
+    record.id = `HLT-${String(count + 1).padStart(3, "0")}`;
+    record.visitDate = new Date().toISOString().split("T")[0];
+    
+    await db.query(
+      "INSERT INTO health_records (id, studentId, studentName, visitDate, diagnosis, treatment, doctor, notes, followUpDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [record.id, record.studentId, record.studentName, record.visitDate, record.diagnosis, record.treatment, record.doctor, record.notes || null, record.followUpDate || null]
+    );
+    await logActivity(`Health record added for ${record.studentName}`, "alert");
+    res.status(201).json(record);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ============= GLOBAL ANALYTICS =============
 
 app.get("/api/analytics", async (req, res) => {

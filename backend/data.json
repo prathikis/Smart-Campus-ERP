@@ -449,5 +449,137 @@
       "appliedDate": "2026-06-21",
       "status": "approved"
     }
+  ],
+  "hostelRooms": [
+    { "id": "ROM-001", "roomNumber": "101", "block": "A", "capacity": 3, "occupied": 2, "type": "AC", "status": "occupied" },
+    { "id": "ROM-002", "roomNumber": "102", "block": "A", "capacity": 3, "occupied": 0, "type": "AC", "status": "available" },
+    { "id": "ROM-003", "roomNumber": "103", "block": "A", "capacity": 2, "occupied": 2, "type": "Non-AC", "status": "occupied" },
+    { "id": "ROM-004", "roomNumber": "201", "block": "B", "capacity": 3, "occupied": 1, "type": "AC", "status": "available" },
+    { "id": "ROM-005", "roomNumber": "202", "block": "B", "capacity": 2, "occupied": 0, "type": "Non-AC", "status": "available" },
+    { "id": "ROM-006", "roomNumber": "203", "block": "B", "capacity": 3, "occupied": 3, "type": "AC", "status": "occupied" },
+    { "id": "ROM-007", "roomNumber": "301", "block": "C", "capacity": 2, "occupied": 0, "type": "AC", "status": "available" },
+    { "id": "ROM-008", "roomNumber": "302", "block": "C", "capacity": 3, "occupied": 2, "type": "Non-AC", "status": "available" },
+    { "id": "ROM-009", "roomNumber": "303", "block": "C", "capacity": 2, "occupied": 2, "type": "AC", "status": "occupied" },
+    { "id": "ROM-010", "roomNumber": "401", "block": "A", "capacity": 3, "occupied": 0, "type": "Non-AC", "status": "available" }
+  ],
+  "hostelMess": [
+    { "id": "MES-001", "studentId": "STU-001", "studentName": "Niveditha G", "planType": "Premium", "startDate": "2026-01-01", "endDate": "2026-12-31", "status": "active" },
+    { "id": "MES-002", "studentId": "STU-002", "studentName": "Rohan Sharma", "planType": "Standard", "startDate": "2026-01-01", "endDate": "2026-12-31", "status": "active" },
+    { "id": "MES-003", "studentId": "STU-003", "studentName": "Priyanka Sen", "planType": "Premium", "startDate": "2026-01-01", "endDate": "2026-12-31", "status": "active" },
+    { "id": "MES-004", "studentId": "STU-004", "studentName": "Amit Patel", "planType": "Standard", "startDate": "2026-01-01", "endDate": "2026-12-31", "status": "active" },
+    { "id": "MES-005", "studentId": "STU-005", "studentName": "Deepa Naik", "planType": "Premium", "startDate": "2026-01-01", "endDate": "2026-12-31", "status": "active" },
+    { "id": "MES-006", "studentId": "STU-006", "studentName": "Kavya R", "planType": "Standard", "startDate": "2026-01-01", "endDate": "2026-12-31", "status": "active" },
+    { "id": "MES-007", "studentId": "STU-007", "studentName": "Test", "planType": "Premium", "startDate": "2026-01-01", "endDate": "2026-12-31", "status": "active" },
+    { "id": "MES-008", "studentId": "STU-001", "studentName": "Niveditha G", "planType": "Standard", "startDate": "2026-06-01", "endDate": "2026-12-31", "status": "active" },
+    { "id": "MES-009", "studentId": "STU-002", "studentName": "Rohan Sharma", "planType": "Premium", "startDate": "2026-06-01", "endDate": "2026-12-31", "status": "active" },
+    { "id": "MES-010", "studentId": "STU-003", "studentName": "Priyanka Sen", "planType": "Standard", "startDate": "2026-06-01", "endDate": "2026-12-31", "status": "active" }
+  ],
+  "hostelVisitors": [
+    { "id": "VIS-001", "studentId": "STU-001", "studentName": "Niveditha G", "visitorName": "Ramesh G", "relation": "Father", "visitDate": "2026-06-15", "checkInTime": "10:30", "checkOutTime": null, "status": "checked-out" },
+    { "id": "VIS-002", "studentId": "STU-002", "studentName": "Rohan Sharma", "visitorName": "Suresh Sharma", "relation": "Father", "visitDate": "2026-06-16", "checkInTime": "14:00", "checkOutTime": "17:30", "status": "checked-out" },
+    { "id": "VIS-003", "studentId": "STU-003", "studentName": "Priyanka Sen", "visitorName": "Anil Sen", "relation": "Father", "visitDate": "2026-06-17", "checkInTime": "11:00", "checkOutTime": null, "status": "checked-in" },
+    { "id": "VIS-004", "studentId": "STU-004", "studentName": "Amit Patel", "visitorName": "Rajesh Patel", "relation": "Father", "visitDate": "2026-06-18", "checkInTime": "09:30", "checkOutTime": "12:00", "status": "checked-out" },
+    { "id": "VIS-005", "studentId": "STU-005", "studentName": "Deepa Naik", "visitorName": "Sunil Naik", "relation": "Father", "visitDate": "2026-06-19", "checkInTime": "15:00", "checkOutTime": null, "status": "checked-in" },
+    { "id": "VIS-006", "studentId": "STU-001", "studentName": "Niveditha G", "visitorName": "Lakshmi G", "relation": "Mother", "visitDate": "2026-06-20", "checkInTime": "10:00", "checkOutTime": "13:00", "status": "checked-out" },
+    { "id": "VIS-007", "studentId": "STU-002", "studentName": "Rohan Sharma", "visitorName": "Meena Sharma", "relation": "Mother", "visitDate": "2026-06-21", "checkInTime": "11:30", "checkOutTime": null, "status": "checked-in" },
+    { "id": "VIS-008", "studentId": "STU-003", "studentName": "Priyanka Sen", "visitorName": "Rita Sen", "relation": "Mother", "visitDate": "2026-06-22", "checkInTime": "14:00", "checkOutTime": "16:30", "status": "checked-out" },
+    { "id": "VIS-009", "studentId": "STU-004", "studentName": "Amit Patel", "visitorName": "Sunita Patel", "relation": "Mother", "visitDate": "2026-06-23", "checkInTime": "09:00", "checkOutTime": null, "status": "checked-in" },
+    { "id": "VIS-010", "studentId": "STU-005", "studentName": "Deepa Naik", "visitorName": "Anita Naik", "relation": "Mother", "visitDate": "2026-06-24", "checkInTime": "10:30", "checkOutTime": "14:00", "status": "checked-out" }
+  ],
+  "libraryReservations": [
+    { "id": "RES-001", "studentId": "STU-001", "studentName": "Niveditha G", "isbn": "978-0078022128", "bookTitle": "Software Engineering: A Practitioner's Approach", "reservationDate": "2026-06-15", "status": "fulfilled" },
+    { "id": "RES-002", "studentId": "STU-002", "studentName": "Rohan Sharma", "isbn": "978-0133970777", "bookTitle": "Fundamentals of Database Systems", "reservationDate": "2026-06-16", "status": "pending" },
+    { "id": "RES-003", "studentId": "STU-003", "studentName": "Priyanka Sen", "isbn": "978-1118063330", "bookTitle": "Operating System Concepts", "reservationDate": "2026-06-17", "status": "fulfilled" },
+    { "id": "RES-004", "studentId": "STU-004", "studentName": "Amit Patel", "isbn": "978-0596007126", "bookTitle": "Head First Design Patterns", "reservationDate": "2026-06-18", "status": "pending" },
+    { "id": "RES-005", "studentId": "STU-005", "studentName": "Deepa Naik", "isbn": "978-1118008188", "bookTitle": "HTML and CSS: Design and Build Websites", "reservationDate": "2026-06-19", "status": "fulfilled" },
+    { "id": "RES-006", "studentId": "STU-001", "studentName": "Niveditha G", "isbn": "978-0133970777", "bookTitle": "Fundamentals of Database Systems", "reservationDate": "2026-06-20", "status": "pending" },
+    { "id": "RES-007", "studentId": "STU-002", "studentName": "Rohan Sharma", "isbn": "978-0078022128", "bookTitle": "Software Engineering: A Practitioner's Approach", "reservationDate": "2026-06-21", "status": "fulfilled" },
+    { "id": "RES-008", "studentId": "STU-003", "studentName": "Priyanka Sen", "isbn": "978-0596007126", "bookTitle": "Head First Design Patterns", "reservationDate": "2026-06-22", "status": "pending" },
+    { "id": "RES-009", "studentId": "STU-004", "studentName": "Amit Patel", "isbn": "978-1118063330", "bookTitle": "Operating System Concepts", "reservationDate": "2026-06-23", "status": "fulfilled" },
+    { "id": "RES-010", "studentId": "STU-005", "studentName": "Deepa Naik", "isbn": "978-0078022128", "bookTitle": "Software Engineering: A Practitioner's Approach", "reservationDate": "2026-06-24", "status": "pending" }
+  ],
+  "libraryFines": [
+    { "id": "FIN-001", "studentId": "STU-001", "studentName": "Niveditha G", "isbn": "978-0078022128", "bookTitle": "Software Engineering: A Practitioner's Approach", "amount": 50, "reason": "Late return", "status": "paid" },
+    { "id": "FIN-002", "studentId": "STU-002", "studentName": "Rohan Sharma", "isbn": "978-0133970777", "bookTitle": "Fundamentals of Database Systems", "amount": 100, "reason": "Damaged book", "status": "pending" },
+    { "id": "FIN-003", "studentId": "STU-003", "studentName": "Priyanka Sen", "isbn": "978-1118063330", "bookTitle": "Operating System Concepts", "amount": 25, "reason": "Late return", "status": "paid" },
+    { "id": "FIN-004", "studentId": "STU-004", "studentName": "Amit Patel", "isbn": "978-0596007126", "bookTitle": "Head First Design Patterns", "amount": 75, "reason": "Lost book", "status": "pending" },
+    { "id": "FIN-005", "studentId": "STU-005", "studentName": "Deepa Naik", "isbn": "978-1118008188", "bookTitle": "HTML and CSS: Design and Build Websites", "amount": 50, "reason": "Late return", "status": "paid" },
+    { "id": "FIN-006", "studentId": "STU-001", "studentName": "Niveditha G", "isbn": "978-0133970777", "bookTitle": "Fundamentals of Database Systems", "amount": 100, "reason": "Damaged book", "status": "pending" },
+    { "id": "FIN-007", "studentId": "STU-002", "studentName": "Rohan Sharma", "isbn": "978-0078022128", "bookTitle": "Software Engineering: A Practitioner's Approach", "amount": 25, "reason": "Late return", "status": "paid" },
+    { "id": "FIN-008", "studentId": "STU-003", "studentName": "Priyanka Sen", "isbn": "978-0596007126", "bookTitle": "Head First Design Patterns", "amount": 75, "reason": "Lost book", "status": "pending" },
+    { "id": "FIN-009", "studentId": "STU-004", "studentName": "Amit Patel", "isbn": "978-1118063330", "bookTitle": "Operating System Concepts", "amount": 50, "reason": "Late return", "status": "paid" },
+    { "id": "FIN-010", "studentId": "STU-005", "studentName": "Deepa Naik", "isbn": "978-0078022128", "bookTitle": "Software Engineering: A Practitioner's Approach", "amount": 100, "reason": "Damaged book", "status": "pending" }
+  ],
+  "salonAppointments": [
+    { "id": "SAL-001", "studentId": "STU-001", "studentName": "Niveditha G", "serviceType": "Haircut", "appointmentDate": "2026-06-15", "appointmentTime": "10:00", "staff": "Rajesh", "amount": 150, "status": "completed" },
+    { "id": "SAL-002", "studentId": "STU-002", "studentName": "Rohan Sharma", "serviceType": "Styling", "appointmentDate": "2026-06-16", "appointmentTime": "14:00", "staff": "Priya", "amount": 300, "status": "completed" },
+    { "id": "SAL-003", "studentId": "STU-003", "studentName": "Priyanka Sen", "serviceType": "Facial", "appointmentDate": "2026-06-17", "appointmentTime": "11:00", "staff": "Anita", "amount": 500, "status": "scheduled" },
+    { "id": "SAL-004", "studentId": "STU-004", "studentName": "Amit Patel", "serviceType": "Massage", "appointmentDate": "2026-06-18", "appointmentTime": "15:00", "staff": "Suresh", "amount": 800, "status": "scheduled" },
+    { "id": "SAL-005", "studentId": "STU-005", "studentName": "Deepa Naik", "serviceType": "Haircut", "appointmentDate": "2026-06-19", "appointmentTime": "09:00", "staff": "Rajesh", "amount": 150, "status": "completed" },
+    { "id": "SAL-006", "studentId": "STU-001", "studentName": "Niveditha G", "serviceType": "Styling", "appointmentDate": "2026-06-20", "appointmentTime": "10:30", "staff": "Priya", "amount": 300, "status": "scheduled" },
+    { "id": "SAL-007", "studentId": "STU-002", "studentName": "Rohan Sharma", "serviceType": "Facial", "appointmentDate": "2026-06-21", "appointmentTime": "14:30", "staff": "Anita", "amount": 500, "status": "scheduled" },
+    { "id": "SAL-008", "studentId": "STU-003", "studentName": "Priyanka Sen", "serviceType": "Massage", "appointmentDate": "2026-06-22", "appointmentTime": "11:30", "staff": "Suresh", "amount": 800, "status": "completed" },
+    { "id": "SAL-009", "studentId": "STU-004", "studentName": "Amit Patel", "serviceType": "Haircut", "appointmentDate": "2026-06-23", "appointmentTime": "15:30", "staff": "Rajesh", "amount": 150, "status": "scheduled" },
+    { "id": "SAL-010", "studentId": "STU-005", "studentName": "Deepa Naik", "serviceType": "Styling", "appointmentDate": "2026-06-24", "appointmentTime": "09:30", "staff": "Priya", "amount": 300, "status": "scheduled" }
+  ],
+  "sportsBookings": [
+    { "id": "SPO-001", "studentId": "STU-001", "studentName": "Niveditha G", "facilityName": "Football Ground", "bookingDate": "2026-06-15", "startTime": "10:00", "endTime": "12:00", "purpose": "Practice", "status": "completed" },
+    { "id": "SPO-002", "studentId": "STU-002", "studentName": "Rohan Sharma", "facilityName": "Basketball Court", "bookingDate": "2026-06-16", "startTime": "14:00", "endTime": "16:00", "purpose": "Match", "status": "completed" },
+    { "id": "SPO-003", "studentId": "STU-003", "studentName": "Priyanka Sen", "facilityName": "Tennis Court", "bookingDate": "2026-06-17", "startTime": "09:00", "endTime": "11:00", "purpose": "Practice", "status": "confirmed" },
+    { "id": "SPO-004", "studentId": "STU-004", "studentName": "Amit Patel", "facilityName": "Cricket Net", "bookingDate": "2026-06-18", "startTime": "15:00", "endTime": "17:00", "purpose": "Practice", "status": "confirmed" },
+    { "id": "SPO-005", "studentId": "STU-005", "studentName": "Deepa Naik", "facilityName": "Gym", "bookingDate": "2026-06-19", "startTime": "07:00", "endTime": "09:00", "purpose": "Workout", "status": "completed" },
+    { "id": "SPO-006", "studentId": "STU-001", "studentName": "Niveditha G", "facilityName": "Basketball Court", "bookingDate": "2026-06-20", "startTime": "10:00", "endTime": "12:00", "purpose": "Match", "status": "confirmed" },
+    { "id": "SPO-007", "studentId": "STU-002", "studentName": "Rohan Sharma", "facilityName": "Football Ground", "bookingDate": "2026-06-21", "startTime": "14:00", "endTime": "16:00", "purpose": "Practice", "status": "confirmed" },
+    { "id": "SPO-008", "studentId": "STU-003", "studentName": "Priyanka Sen", "facilityName": "Gym", "bookingDate": "2026-06-22", "startTime": "08:00", "endTime": "10:00", "purpose": "Workout", "status": "completed" },
+    { "id": "SPO-009", "studentId": "STU-004", "studentName": "Amit Patel", "facilityName": "Tennis Court", "bookingDate": "2026-06-23", "startTime": "15:00", "endTime": "17:00", "purpose": "Practice", "status": "confirmed" },
+    { "id": "SPO-010", "studentId": "STU-005", "studentName": "Deepa Naik", "facilityName": "Cricket Net", "bookingDate": "2026-06-24", "startTime": "09:00", "endTime": "11:00", "purpose": "Match", "status": "confirmed" }
+  ],
+  "cafeteriaOrders": [
+    { "id": "CAF-001", "studentId": "STU-001", "studentName": "Niveditha G", "items": [{"name": "Burger", "quantity": 1, "price": 80}, {"name": "Coke", "quantity": 1, "price": 30}], "totalAmount": 110, "orderDate": "2026-06-15", "orderTime": "12:00", "status": "completed" },
+    { "id": "CAF-002", "studentId": "STU-002", "studentName": "Rohan Sharma", "items": [{"name": "Pizza", "quantity": 1, "price": 150}, {"name": "Pepsi", "quantity": 1, "price": 30}], "totalAmount": 180, "orderDate": "2026-06-16", "orderTime": "13:00", "status": "completed" },
+    { "id": "CAF-003", "studentId": "STU-003", "studentName": "Priyanka Sen", "items": [{"name": "Sandwich", "quantity": 2, "price": 50}, {"name": "Coffee", "quantity": 1, "price": 25}], "totalAmount": 125, "orderDate": "2026-06-17", "orderTime": "11:00", "status": "ready" },
+    { "id": "CAF-004", "studentId": "STU-004", "studentName": "Amit Patel", "items": [{"name": "Thali", "quantity": 1, "price": 100}, {"name": "Lassi", "quantity": 1, "price": 40}], "totalAmount": 140, "orderDate": "2026-06-18", "orderTime": "14:00", "status": "ready" },
+    { "id": "CAF-005", "studentId": "STU-005", "studentName": "Deepa Naik", "items": [{"name": "Noodles", "quantity": 1, "price": 70}, {"name": "Juice", "quantity": 1, "price": 35}], "totalAmount": 105, "orderDate": "2026-06-19", "orderTime": "12:30", "status": "completed" },
+    { "id": "CAF-006", "studentId": "STU-001", "studentName": "Niveditha G", "items": [{"name": "Pizza", "quantity": 1, "price": 150}, {"name": "Coke", "quantity": 1, "price": 30}], "totalAmount": 180, "orderDate": "2026-06-20", "orderTime": "13:30", "status": "ready" },
+    { "id": "CAF-007", "studentId": "STU-002", "studentName": "Rohan Sharma", "items": [{"name": "Burger", "quantity": 2, "price": 80}, {"name": "Coffee", "quantity": 1, "price": 25}], "totalAmount": 185, "orderDate": "2026-06-21", "orderTime": "11:30", "status": "ready" },
+    { "id": "CAF-008", "studentId": "STU-003", "studentName": "Priyanka Sen", "items": [{"name": "Thali", "quantity": 1, "price": 100}, {"name": "Lassi", "quantity": 1, "price": 40}], "totalAmount": 140, "orderDate": "2026-06-22", "orderTime": "14:30", "status": "completed" },
+    { "id": "CAF-009", "studentId": "STU-004", "studentName": "Amit Patel", "items": [{"name": "Sandwich", "quantity": 1, "price": 50}, {"name": "Juice", "quantity": 1, "price": 35}], "totalAmount": 85, "orderDate": "2026-06-23", "orderTime": "12:00", "status": "ready" },
+    { "id": "CAF-010", "studentId": "STU-005", "studentName": "Deepa Naik", "items": [{"name": "Noodles", "quantity": 2, "price": 70}, {"name": "Coffee", "quantity": 1, "price": 25}], "totalAmount": 165, "orderDate": "2026-06-24", "orderTime": "13:00", "status": "ready" }
+  ],
+  "transportRoutes": [
+    { "id": "RTE-001", "routeNumber": "R001", "routeName": "City Center to Campus", "driverName": "Ramesh Kumar", "driverPhone": "9876543210", "vehicleNumber": "KA-01-AB-1234", "capacity": 40, "status": "active" },
+    { "id": "RTE-002", "routeNumber": "R002", "routeName": "Railway Station to Campus", "driverName": "Suresh Singh", "driverPhone": "9876543211", "vehicleNumber": "KA-01-CD-5678", "capacity": 45, "status": "active" },
+    { "id": "RTE-003", "routeNumber": "R003", "routeName": "North Zone to Campus", "driverName": "Mahesh Patel", "driverPhone": "9876543212", "vehicleNumber": "KA-01-EF-9012", "capacity": 35, "status": "active" },
+    { "id": "RTE-004", "routeNumber": "R004", "routeName": "South Zone to Campus", "driverName": "Rajesh Verma", "driverPhone": "9876543213", "vehicleNumber": "KA-01-GH-3456", "capacity": 40, "status": "active" },
+    { "id": "RTE-005", "routeNumber": "R005", "routeName": "East Zone to Campus", "driverName": "Sunil Sharma", "driverPhone": "9876543214", "vehicleNumber": "KA-01-IJ-7890", "capacity": 38, "status": "active" },
+    { "id": "RTE-006", "routeNumber": "R006", "routeName": "West Zone to Campus", "driverName": "Anil Gupta", "driverPhone": "9876543215", "vehicleNumber": "KA-01-KL-2345", "capacity": 42, "status": "active" },
+    { "id": "RTE-007", "routeNumber": "R007", "routeName": "Airport to Campus", "driverName": "Vikram Singh", "driverPhone": "9876543216", "vehicleNumber": "KA-01-MN-6789", "capacity": 30, "status": "inactive" },
+    { "id": "RTE-008", "routeNumber": "R008", "routeName": "IT Park to Campus", "driverName": "Dinesh Kumar", "driverPhone": "9876543217", "vehicleNumber": "KA-01-OP-0123", "capacity": 40, "status": "active" },
+    { "id": "RTE-009", "routeNumber": "R009", "routeName": "Industrial Area to Campus", "driverName": "Prakash Yadav", "driverPhone": "9876543218", "vehicleNumber": "KA-01-QR-4567", "capacity": 45, "status": "active" },
+    { "id": "RTE-010", "routeNumber": "R010", "routeName": "Residential Complex to Campus", "driverName": "Mohan Das", "driverPhone": "9876543219", "vehicleNumber": "KA-01-ST-8901", "capacity": 35, "status": "active" }
+  ],
+  "transportPasses": [
+    { "id": "PAS-001", "studentId": "STU-001", "studentName": "Niveditha G", "routeId": "RTE-001", "issueDate": "2026-01-01", "expiryDate": "2026-12-31", "status": "active" },
+    { "id": "PAS-002", "studentId": "STU-002", "studentName": "Rohan Sharma", "routeId": "RTE-002", "issueDate": "2026-01-01", "expiryDate": "2026-12-31", "status": "active" },
+    { "id": "PAS-003", "studentId": "STU-003", "studentName": "Priyanka Sen", "routeId": "RTE-003", "issueDate": "2026-01-01", "expiryDate": "2026-12-31", "status": "active" },
+    { "id": "PAS-004", "studentId": "STU-004", "studentName": "Amit Patel", "routeId": "RTE-004", "issueDate": "2026-01-01", "expiryDate": "2026-12-31", "status": "active" },
+    { "id": "PAS-005", "studentId": "STU-005", "studentName": "Deepa Naik", "routeId": "RTE-005", "issueDate": "2026-01-01", "expiryDate": "2026-12-31", "status": "active" },
+    { "id": "PAS-006", "studentId": "STU-001", "studentName": "Niveditha G", "routeId": "RTE-006", "issueDate": "2026-06-01", "expiryDate": "2026-12-31", "status": "active" },
+    { "id": "PAS-007", "studentId": "STU-002", "studentName": "Rohan Sharma", "routeId": "RTE-007", "issueDate": "2026-06-01", "expiryDate": "2026-12-31", "status": "expired" },
+    { "id": "PAS-008", "studentId": "STU-003", "studentName": "Priyanka Sen", "routeId": "RTE-008", "issueDate": "2026-06-01", "expiryDate": "2026-12-31", "status": "active" },
+    { "id": "PAS-009", "studentId": "STU-004", "studentName": "Amit Patel", "routeId": "RTE-009", "issueDate": "2026-06-01", "expiryDate": "2026-12-31", "status": "active" },
+    { "id": "PAS-010", "studentId": "STU-005", "studentName": "Deepa Naik", "routeId": "RTE-010", "issueDate": "2026-06-01", "expiryDate": "2026-12-31", "status": "active" }
+  ],
+  "healthRecords": [
+    { "id": "HLT-001", "studentId": "STU-001", "studentName": "Niveditha G", "visitDate": "2026-06-15", "diagnosis": "Fever", "treatment": "Paracetamol", "doctor": "Dr. Sharma", "notes": "Mild fever, rest advised", "followUpDate": "2026-06-17" },
+    { "id": "HLT-002", "studentId": "STU-002", "studentName": "Rohan Sharma", "visitDate": "2026-06-16", "diagnosis": "Sprain", "treatment": "Ice pack, rest", "doctor": "Dr. Patel", "notes": "Ankle sprain during sports", "followUpDate": "2026-06-20" },
+    { "id": "HLT-003", "studentId": "STU-003", "studentName": "Priyanka Sen", "visitDate": "2026-06-17", "diagnosis": "Headache", "treatment": "Pain reliever", "doctor": "Dr. Gupta", "notes": "Migraine symptoms", "followUpDate": null },
+    { "id": "HLT-004", "studentId": "STU-004", "studentName": "Amit Patel", "visitDate": "2026-06-18", "diagnosis": "Stomach pain", "treatment": "Antacid", "doctor": "Dr. Singh", "notes": "Food poisoning suspected", "followUpDate": "2026-06-21" },
+    { "id": "HLT-005", "studentId": "STU-005", "studentName": "Deepa Naik", "visitDate": "2026-06-19", "diagnosis": "Cold", "treatment": "Cough syrup", "doctor": "Dr. Verma", "notes": "Seasonal cold", "followUpDate": null },
+    { "id": "HLT-006", "studentId": "STU-001", "studentName": "Niveditha G", "visitDate": "2026-06-20", "diagnosis": "Eye strain", "treatment": "Eye drops", "doctor": "Dr. Sharma", "notes": "Computer vision syndrome", "followUpDate": "2026-06-25" },
+    { "id": "HLT-007", "studentId": "STU-002", "studentName": "Rohan Sharma", "visitDate": "2026-06-21", "diagnosis": "Back pain", "treatment": "Pain reliever, physio", "doctor": "Dr. Patel", "notes": "Muscle strain", "followUpDate": "2026-06-24" },
+    { "id": "HLT-008", "studentId": "STU-003", "studentName": "Priyanka Sen", "visitDate": "2026-06-22", "diagnosis": "Allergy", "treatment": "Antihistamine", "doctor": "Dr. Gupta", "notes": "Dust allergy", "followUpDate": null },
+    { "id": "HLT-009", "studentId": "STU-004", "studentName": "Amit Patel", "visitDate": "2026-06-23", "diagnosis": "Dizziness", "treatment": "Rest, hydration", "doctor": "Dr. Singh", "notes": "Dehydration", "followUpDate": "2026-06-26" },
+    { "id": "HLT-010", "studentId": "STU-005", "studentName": "Deepa Naik", "visitDate": "2026-06-24", "diagnosis": "Throat infection", "treatment": "Antibiotics", "doctor": "Dr. Verma", "notes": "Bacterial infection", "followUpDate": "2026-06-28" }
   ]
 }
