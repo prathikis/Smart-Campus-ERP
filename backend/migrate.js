@@ -81,6 +81,11 @@ async function run() {
       email VARCHAR(100) NOT NULL,
       phone VARCHAR(20) NOT NULL,
       guardian VARCHAR(100) NOT NULL,
+      guardianPhone VARCHAR(20) NULL,
+      gender VARCHAR(20) NULL,
+      dob DATE NULL,
+      bloodGroup VARCHAR(10) NULL,
+      address TEXT NULL,
       attendance INT DEFAULT 0,
       gpa DECIMAL(4,2) DEFAULT 0.00,
       gradeTrends JSON NULL,
@@ -356,8 +361,8 @@ async function run() {
     if (seed.students && seed.students.length > 0) {
       for (const s of seed.students) {
         await db.query(
-          "INSERT INTO students (id, name, rollNo, department, email, phone, guardian, attendance, gpa, gradeTrends, subjects) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-          [s.id, s.name, s.rollNo, s.department, s.email, s.phone, s.guardian, s.attendance, s.gpa, JSON.stringify(s.gradeTrends || []), JSON.stringify(s.subjects || {})]
+          "INSERT INTO students (id, name, rollNo, department, email, phone, guardian, guardianPhone, gender, dob, bloodGroup, address, attendance, gpa, gradeTrends, subjects) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          [s.id, s.name, s.rollNo, s.department, s.email, s.phone, s.guardian, s.guardianPhone || null, s.gender || null, s.dob || null, s.bloodGroup || null, s.address || null, s.attendance, s.gpa, JSON.stringify(s.gradeTrends || []), JSON.stringify(s.subjects || {})]
         );
       }
       console.log(`Seeded ${seed.students.length} students.`);

@@ -129,7 +129,7 @@ app.post("/api/students", async (req, res) => {
     }
     
     await db.query(
-      "INSERT INTO students (id, name, rollNo, department, email, phone, guardian, attendance, gpa, gradeTrends, subjects) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO students (id, name, rollNo, department, email, phone, guardian, guardianPhone, gender, dob, bloodGroup, address, attendance, gpa, gradeTrends, subjects) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
         newStudent.id,
         newStudent.name,
@@ -138,6 +138,11 @@ app.post("/api/students", async (req, res) => {
         newStudent.email,
         newStudent.phone,
         newStudent.guardian,
+        newStudent.guardianPhone || null,
+        newStudent.gender || null,
+        newStudent.dob || null,
+        newStudent.bloodGroup || null,
+        newStudent.address || null,
         newStudent.attendance || 100,
         newStudent.gpa || 8.5,
         JSON.stringify(newStudent.gradeTrends),

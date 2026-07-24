@@ -71,8 +71,11 @@ export default function SmartCampusApp() {
   const [studentFormMode, setStudentFormMode] = useState("create");
   const [studentFormId, setStudentFormId] = useState("");
   const [studentForm, setStudentForm] = useState({
-    name: "", rollNo: "", department: "Computer Science", email: "", attendance: 100, gpa: 8.5
+    name: "", rollNo: "", department: "Computer Science", email: "", phone: "", guardian: "", guardianPhone: "", gender: "", dob: "", bloodGroup: "", address: "", attendance: 100, gpa: 8.5
   });
+  
+  // Student Profile View State
+  const [viewStudent, setViewStudent] = useState(null);
   
   const [facultyForm, setFacultyForm] = useState({
     id: "", name: "", department: "Computer Science", designation: "", email: "", status: "Active"
@@ -321,7 +324,7 @@ export default function SmartCampusApp() {
     setStudentFormMode("create");
     setStudentFormId("");
     setStudentForm({
-      name: "", rollNo: "", department: "Computer Science", email: "", attendance: 100, gpa: 8.5
+      name: "", rollNo: "", department: "Computer Science", email: "", phone: "", guardian: "", guardianPhone: "", gender: "", dob: "", bloodGroup: "", address: "", attendance: 100, gpa: 8.5
     });
     setModalActive("student");
   }
@@ -334,10 +337,21 @@ export default function SmartCampusApp() {
       rollNo: student.rollNo,
       department: student.department,
       email: student.email,
+      phone: student.phone || "",
+      guardian: student.guardian || "",
+      guardianPhone: student.guardianPhone || "",
+      gender: student.gender || "",
+      dob: student.dob || "",
+      bloodGroup: student.bloodGroup || "",
+      address: student.address || "",
       attendance: student.attendance,
       gpa: student.gpa
     });
     setModalActive("student");
+  }
+
+  function openViewStudent(student) {
+    setViewStudent(student);
   }
 
   async function handleDeleteStudent(id, name) {
@@ -1393,6 +1407,7 @@ export default function SmartCampusApp() {
                           {currentUser?.role === "admin" && (
                             <td>
                               <div className="table-actions">
+                                <button className="btn btn-info btn-sm" onClick={() => openViewStudent(s)}>View</button>
                                 <button className="btn btn-secondary btn-sm" onClick={() => openEditStudent(s)}>Edit</button>
                                 <button className="btn btn-danger btn-sm" onClick={() => handleDeleteStudent(s.id, s.name)}>Delete</button>
                               </div>
@@ -2315,6 +2330,76 @@ export default function SmartCampusApp() {
               </div>
               <div className="form-row">
                 <div className="form-group">
+                  <label className="form-label">Phone Number</label>
+                  <input
+                    type="tel" className="form-control" required
+                    value={studentForm.phone} onChange={e => setStudentForm({ ...studentForm, phone: e.target.value })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Gender</label>
+                  <select
+                    className="form-control" value={studentForm.gender}
+                    onChange={e => setStudentForm({ ...studentForm, gender: e.target.value })}
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Date of Birth</label>
+                  <input
+                    type="date" className="form-control"
+                    value={studentForm.dob} onChange={e => setStudentForm({ ...studentForm, dob: e.target.value })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Blood Group</label>
+                  <select
+                    className="form-control" value={studentForm.bloodGroup}
+                    onChange={e => setStudentForm({ ...studentForm, bloodGroup: e.target.value })}
+                  >
+                    <option value="">Select Blood Group</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                  </select>
+                </div>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Address</label>
+                <textarea
+                  className="form-control" rows="2"
+                  value={studentForm.address} onChange={e => setStudentForm({ ...studentForm, address: e.target.value })}
+                />
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Guardian Name</label>
+                  <input
+                    type="text" className="form-control" required
+                    value={studentForm.guardian} onChange={e => setStudentForm({ ...studentForm, guardian: e.target.value })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Guardian Phone</label>
+                  <input
+                    type="tel" className="form-control"
+                    value={studentForm.guardianPhone} onChange={e => setStudentForm({ ...studentForm, guardianPhone: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
                   <label className="form-label">Initial Attendance (%)</label>
                   <input
                     type="number" className="form-control" required min="0" max="100"
@@ -2334,6 +2419,113 @@ export default function SmartCampusApp() {
                 <button type="submit" className="btn btn-primary">Save Profile</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* A1. STUDENT PROFILE VIEW MODAL */}
+      {viewStudent && (
+        <div className="modal-overlay active" style={{ zIndex: 10001 }}>
+          <div className="modal-content" style={{ maxWidth: "700px" }}>
+            <div className="modal-header">
+              <h3>Student Profile</h3>
+              <button className="modal-close-btn" onClick={() => setViewStudent(null)}>&times;</button>
+            </div>
+            <div style={{ padding: "24px" }}>
+              {/* Profile Header */}
+              <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "24px", paddingBottom: "20px", borderBottom: "1px solid var(--border-color)" }}>
+                <div className="avatar-circle" style={{ width: "80px", height: "80px", fontSize: "2rem", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "rgba(99, 102, 241, 0.1)", color: "var(--color-brand)" }}>
+                  {viewStudent.name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <h2 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "4px" }}>{viewStudent.name}</h2>
+                  <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", fontFamily: "monospace" }}>{viewStudent.id}</p>
+                  <span className={`badge ${viewStudent.gpa >= 7.0 ? "badge-success" : "badge-warning"}`} style={{ marginTop: "8px", display: "inline-block" }}>
+                    {viewStudent.gpa >= 7.0 ? "Active" : "At Risk"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Personal Information */}
+              <div style={{ marginBottom: "24px" }}>
+                <h4 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "16px", color: "var(--color-brand)" }}>Personal Information</h4>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+                  <div>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Student ID</label>
+                    <p style={{ fontSize: "0.95rem", fontWeight: 500 }}>{viewStudent.id}</p>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Roll Number</label>
+                    <p style={{ fontSize: "0.95rem", fontWeight: 500, fontFamily: "monospace" }}>{viewStudent.rollNo}</p>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Department</label>
+                    <p style={{ fontSize: "0.95rem", fontWeight: 500 }}>{viewStudent.department}</p>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Email</label>
+                    <p style={{ fontSize: "0.95rem", fontWeight: 500 }}>{viewStudent.email}</p>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Phone Number</label>
+                    <p style={{ fontSize: "0.95rem", fontWeight: 500 }}>{viewStudent.phone || "N/A"}</p>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Gender</label>
+                    <p style={{ fontSize: "0.95rem", fontWeight: 500 }}>{viewStudent.gender || "N/A"}</p>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Date of Birth</label>
+                    <p style={{ fontSize: "0.95rem", fontWeight: 500 }}>{viewStudent.dob || "N/A"}</p>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Blood Group</label>
+                    <p style={{ fontSize: "0.95rem", fontWeight: 500 }}>{viewStudent.bloodGroup || "N/A"}</p>
+                  </div>
+                  <div style={{ gridColumn: "span 2" }}>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Address</label>
+                    <p style={{ fontSize: "0.95rem", fontWeight: 500 }}>{viewStudent.address || "N/A"}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Parent/Guardian Information */}
+              <div style={{ marginBottom: "24px" }}>
+                <h4 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "16px", color: "var(--color-brand)" }}>Parent/Guardian Information</h4>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+                  <div>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Parent/Guardian Name</label>
+                    <p style={{ fontSize: "0.95rem", fontWeight: 500 }}>{viewStudent.guardian || "N/A"}</p>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>Parent Contact</label>
+                    <p style={{ fontSize: "0.95rem", fontWeight: 500 }}>{viewStudent.guardianPhone || "N/A"}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Academic Information */}
+              <div style={{ marginBottom: "24px" }}>
+                <h4 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "16px", color: "var(--color-brand)" }}>Academic Information</h4>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+                  <div style={{ background: "var(--bg-tertiary)", padding: "16px", borderRadius: "var(--border-radius-md)", textAlign: "center" }}>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px", display: "block", marginBottom: "8px" }}>Attendance</label>
+                    <p style={{ fontSize: "1.5rem", fontWeight: 700, color: viewStudent.attendance >= 75 ? "var(--color-success)" : "var(--color-danger)" }}>{viewStudent.attendance}%</p>
+                  </div>
+                  <div style={{ background: "var(--bg-tertiary)", padding: "16px", borderRadius: "var(--border-radius-md)", textAlign: "center" }}>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px", display: "block", marginBottom: "8px" }}>GPA</label>
+                    <p style={{ fontSize: "1.5rem", fontWeight: 700, color: viewStudent.gpa >= 8.0 ? "var(--color-success)" : viewStudent.gpa >= 7.0 ? "var(--color-brand)" : "var(--color-danger)" }}>{viewStudent.gpa.toFixed(2)}</p>
+                  </div>
+                  <div style={{ background: "var(--bg-tertiary)", padding: "16px", borderRadius: "var(--border-radius-md)", textAlign: "center" }}>
+                    <label style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px", display: "block", marginBottom: "8px" }}>Status</label>
+                    <p style={{ fontSize: "1.25rem", fontWeight: 700, color: viewStudent.gpa >= 7.0 ? "var(--color-success)" : "var(--color-danger)" }}>{viewStudent.gpa >= 7.0 ? "Active" : "Inactive"}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-primary" onClick={() => setViewStudent(null)}>Close</button>
+            </div>
           </div>
         </div>
       )}
